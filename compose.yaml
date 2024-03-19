@@ -4,6 +4,7 @@ services:
     runtime: ${DOCKER_RUNTIME:-runc}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./joshnewans.joy-panel-0.0.3.foxe:/root/.foxglove-studio/extensions/joshnewans.joy-panel-0.0.3.foxe
     environment:
       - DISPLAY=${DISPLAY:?err}
       - LIBGL_ALWAYS_SOFTWARE=${LIBGL_ALWAYS_SOFTWARE:-1}
