@@ -1,6 +1,7 @@
 services:
   foxglove:
-    build: .
+    # build: .
+    image: husarion/foxglove-desktop:humble-2.0.1-20240319
     runtime: ${DOCKER_RUNTIME:-runc}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
