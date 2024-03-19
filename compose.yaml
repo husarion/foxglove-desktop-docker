@@ -1,11 +1,16 @@
 services:
   foxglove:
-    # build: .
-    image: husarion/foxglove-desktop:humble-2.0.1-20240319
-    runtime: ${DOCKER_RUNTIME:-runc}
+    build: .
+    # image: husarion/foxglove-desktop:humble-2.0.1-20240319
+    # runtime: ${DOCKER_RUNTIME:-runc}
+    runtime: nvidia
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - ./joshnewans.joy-panel-0.0.3.foxe:/root/.foxglove-studio/extensions/joshnewans.joy-panel-0.0.3.foxe
+      # - ./extenstions:/root/.foxglove-studio/extensions
+      # - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+    devices:
+      - /dev/input
+    privileged: true
     environment:
       - DISPLAY=${DISPLAY:?err}
       - LIBGL_ALWAYS_SOFTWARE=${LIBGL_ALWAYS_SOFTWARE:-1}

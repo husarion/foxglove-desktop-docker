@@ -22,6 +22,14 @@ RUN apt update && apt install -y \
     apt list --installed 2>/dev/null | grep foxglove | grep -oP 'foxglove-studio/[a-zA-Z0-9,]+ \K[0-9]+\.[0-9]+\.[0-9]+' > /version.txt && \
     rm /tmp/foxglove-studio.deb && \
     apt clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /root/.foxglove-studio/extensions
+
+RUN apt update && apt install -y \
+        ros-$ROS_DISTRO-joy \
+        libcanberra-gtk-module \
+        dbus
+
+COPY extensions /root/.foxglove-studio/extensions
 
 CMD [ "foxglove-studio", "--no-sandbox" ]
