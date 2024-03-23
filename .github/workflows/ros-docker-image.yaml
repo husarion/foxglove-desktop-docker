@@ -46,7 +46,7 @@ jobs:
           FOXGLOVE_RELEASE=${{ inputs.foxglove_release }}
         tags: |
           husarion/foxglove-desktop:${{ inputs.foxglove_release }}-${{ env.SHORT_DATE }}
-          husarion/foxglove-desktop:${{ inputs.foxglove_release }}-${{ env.SHORT_DATE }}
+          husarion/foxglove-desktop:${{ inputs.foxglove_release }}
         # cache-from: type=registry,ref=husarnet/dds-router
         cache-to: type=inline
 
