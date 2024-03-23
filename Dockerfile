@@ -1,14 +1,20 @@
-ARG FOXGLOVE_RELEASE="2.0.1"
+ARG FOXGLOVE_RELEASE="1.87.0"
 
 FROM ubuntu:22.04 AS foxglove-getter
 
 ARG TARGETARCH
 ARG FOXGLOVE_RELEASE
 
+SHELL ["/bin/bash", "-c"]
+
 RUN apt update && apt install -y \
         curl
 
-RUN curl -L https://get.foxglove.dev/desktop/latest/foxglove-studio-${FOXGLOVE_RELEASE}-linux-${TARGETARCH}.deb -o /tmp/foxglove-studio.deb
+RUN if echo "${FOXGLOVE_RELEASE}" | grep -q "^1\."; then \
+      curl -L https://github.com/foxglove/studio/releases/download/v${FOXGLOVE_RELEASE}/foxglove-studio-${FOXGLOVE_RELEASE}-linux-${TARGETARCH}.deb -o /tmp/foxglove-studio.deb; \
+    else \
+      curl -L https://get.foxglove.dev/desktop/latest/foxglove-studio-${FOXGLOVE_RELEASE}-linux-${TARGETARCH}.deb -o /tmp/foxglove-studio.deb; \
+    fi
 
 ## =========================== Final Stage ===============================
 FROM ubuntu:22.04

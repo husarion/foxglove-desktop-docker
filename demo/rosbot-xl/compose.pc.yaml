@@ -1,14 +1,15 @@
 services:
   foxglove:
+    # image: husarion/foxglove-desktop:2.0.1
     build:
       context: ../..
       dockerfile: Dockerfile
     network_mode: host
-    # image: husarion/foxglove-desktop:humble-2.0.1-20240319
     runtime: ${DOCKER_RUNTIME:-runc}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /run/udev/data/:/run/udev/data/
+      - ./layouts:/root/layouts/
     devices:
       - /dev/input
     environment:
