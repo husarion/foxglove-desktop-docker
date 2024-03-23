@@ -1,6 +1,9 @@
 services:
   foxglove:
-    build: .
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    network_mode: host
     # image: husarion/foxglove-desktop:humble-2.0.1-20240319
     runtime: ${DOCKER_RUNTIME:-runc}
     volumes:
@@ -8,9 +11,9 @@ services:
       - /run/udev/data/:/run/udev/data/
     devices:
       - /dev/input
-    privileged: true
     environment:
       - DISPLAY=${DISPLAY:?err}
       - LIBGL_ALWAYS_SOFTWARE=${LIBGL_ALWAYS_SOFTWARE:-1}
       - NVIDIA_VISIBLE_DEVICES=all # if LIBGL_ALWAYS_SOFTWARE=1 this env var is ignored
       - NVIDIA_DRIVER_CAPABILITIES=all # if LIBGL_ALWAYS_SOFTWARE=1 this env var is ignored
+

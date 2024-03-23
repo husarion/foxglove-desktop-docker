@@ -1,0 +1,4 @@
+:{$DS_PORT} {
+	# Reverse Proxy for foxglove-datasource
+	reverse_proxy ws://foxglove-bridge:{$DS_PORT}
+}
