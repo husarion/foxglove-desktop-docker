@@ -1,0 +1,36 @@
+services:
+  # reverse-proxy:
+  #   image: caddy:2.6.2-alpine
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8765:8765
+  #   environment:
+  #     - DS_PORT=8765
+  #   volumes:
+  #     - ./Caddyfile:/etc/caddy/Caddyfile
+
+  foxglove-bridge:
+    image: husarion/foxglove-bridge:humble-0.7.4-20240307
+    restart: unless-stopped
+    ports:
+      - 8765:8765
+    command: >
+      ros2 launch foxglove_bridge foxglove_bridge_launch.xml 
+        port:=8765 
+        capabilities:=[clientPublish,connectionGraph,assets]
+
+  teleop_twist_joy:
+    image: husarion/teleop-twist-joy:humble-2.4.5-20240318
+    restart: unless-stopped
+    command: ros2 run teleop_twist_joy teleop_node --ros-args --params-file /teleop_twist_joy_f710_params.yaml
+
+  rosbot:
+    image: husarion/rosbot-xl:humble-0.10.0-20240216
+    restart: unless-stopped
+    ports:
+      - 192.168.77.2:8888:8888/udp
+    command: >
+      ros2 launch /husarion_utils/rosbot.launch.py
+        mecanum:=${MECANUM:-True}
+        include_camera_mount:=True
+        healthcheck:=False
