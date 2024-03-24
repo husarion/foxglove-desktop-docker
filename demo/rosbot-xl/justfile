@@ -74,6 +74,13 @@ run-foxglove runtime="cpu": _run-as-user
 
     echo "All containers stopped."
 
+remove-launcher:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    sudo rm -rf "$HOME/.local/share/applications/foxglove_rosbot_xl.desktop"
+    update-desktop-database "$HOME/.local/share/applications/"
+    echo "Application launcher for Foxglove ROSbot XL removed."
+
 install-launcher:
     #!/usr/bin/env bash
     set -euo pipefail
