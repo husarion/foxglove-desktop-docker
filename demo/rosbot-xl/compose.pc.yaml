@@ -10,6 +10,7 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /run/udev/data/:/run/udev/data/
       - ./layouts:/root/layouts/
+      - /root # for saving settings
     devices:
       - /dev/input
     environment:
@@ -17,4 +18,4 @@ services:
       - LIBGL_ALWAYS_SOFTWARE=${LIBGL_ALWAYS_SOFTWARE:-1}
       - NVIDIA_VISIBLE_DEVICES=all # if LIBGL_ALWAYS_SOFTWARE=1 this env var is ignored
       - NVIDIA_DRIVER_CAPABILITIES=all # if LIBGL_ALWAYS_SOFTWARE=1 this env var is ignored
-
+    # command: tail -f /dev/null
