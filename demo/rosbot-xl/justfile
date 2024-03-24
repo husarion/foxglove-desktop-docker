@@ -56,9 +56,45 @@ run-foxglove runtime="cpu": _run-as-user
     fi
 
     xhost +local:docker
-    docker compose -f compose.pc.yaml down
-    docker compose -f compose.pc.yaml pull
-    docker compose -f compose.pc.yaml up
+    docker compose -f compose.pc.yaml up &
+
+    # Assuming the GUI container is named "gui_container" in your compose file
+    GUI_CONTAINER_NAME="rosbot-xl-foxglove-1"
+    
+    sleep 2
+    # Wait for the GUI container to exit
+    while [ $(docker ps -q -f name=$GUI_CONTAINER_NAME | wc -l) -gt 0 ]; do
+        sleep 1
+        # echo "GUI container is still running..."
+    done
+
+    # Once the GUI container exits, stop all containers
+    docker compose -f compose.pc.yaml down test
+
+    echo "All containers stopped."
+
+install-launcher:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    
+    LAUNCHER_PATH="$HOME/.local/share/applications/foxglove_rosbot_xl.desktop"
+    CURRENT_DIR=$(pwd)
+    ICON_PATH="${CURRENT_DIR}/husarion-signet.png"
+    
+    echo "[Desktop Entry]
+    Version=1.0
+    Type=Application
+    Name=Foxglove ROSbot XL
+    Exec=bash -c 'just foxglove nvidia'
+    Icon=${ICON_PATH}
+    Path=${CURRENT_DIR}
+    Terminal=false
+    StartupNotify=false" > "${LAUNCHER_PATH}"
+    
+    sudo chmod +x "${LAUNCHER_PATH}"
+    update-desktop-database "$HOME/.local/share/applications/"
+    echo "Application launcher for Foxglove ROSbot XL installed."
+
 
 _run-as-user:
     #!/bin/bash

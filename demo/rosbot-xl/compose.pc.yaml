@@ -1,9 +1,9 @@
 services:
   foxglove:
-    # image: husarion/foxglove-desktop:2.0.1
-    build:
-      context: ../..
-      dockerfile: Dockerfile
+    image: husarion/foxglove-desktop:1.87.0
+    # build:
+    #   context: ../..
+    #   dockerfile: Dockerfile
     network_mode: host
     runtime: ${DOCKER_RUNTIME:-runc}
     volumes:
@@ -19,3 +19,7 @@ services:
       - NVIDIA_VISIBLE_DEVICES=all # if LIBGL_ALWAYS_SOFTWARE=1 this env var is ignored
       - NVIDIA_DRIVER_CAPABILITIES=all # if LIBGL_ALWAYS_SOFTWARE=1 this env var is ignored
     # command: tail -f /dev/null
+
+  test:
+    image: ubuntu:22.04
+    command: tail -f /dev/null
