@@ -85,7 +85,7 @@ install-launcher:
     Version=1.0
     Type=Application
     Name=Foxglove ROSbot XL
-    Exec=bash -c 'just foxglove nvidia'
+    Exec=bash -c 'just foxglove runc'
     Icon=${ICON_PATH}
     Path=${CURRENT_DIR}
     Terminal=false
