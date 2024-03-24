@@ -56,6 +56,7 @@ run-foxglove runtime="cpu": _run-as-user
     fi
 
     xhost +local:docker
+    docker compose -f compose.pc.yaml pull
     docker compose -f compose.pc.yaml up &
 
     # Assuming the GUI container is named "gui_container" in your compose file
@@ -85,7 +86,7 @@ install-launcher:
     Version=1.0
     Type=Application
     Name=Foxglove ROSbot XL
-    Exec=bash -c 'just foxglove runc'
+    Exec=gnome-terminal -- bash -c 'just foxglove runc'
     Icon=${ICON_PATH}
     Path=${CURRENT_DIR}
     Terminal=false
