@@ -81,14 +81,26 @@ remove-launcher:
     update-desktop-database "$HOME/.local/share/applications/"
     echo "Application launcher for Foxglove ROSbot XL removed."
 
+    # Remove application launcher from the Ubuntu dock
+    # Extract the current list of favorites
+    FAVORITES=$(gsettings get org.gnome.shell favorite-apps)
+
+    # Modify the favorites list to remove the launcher, if present
+    NEW_FAVORITES=$(echo $FAVORITES | sed "s/'foxglove_rosbot_xl.desktop',//g" | sed "s/, 'foxglove_rosbot_xl.desktop'//g" | sed "s/'foxglove_rosbot_xl.desktop'//g")
+
+    # Update the list of favorites
+    gsettings set org.gnome.shell favorite-apps "$NEW_FAVORITES"
+
+    echo "Application launcher for Foxglove ROSbot XL removed from the dock."
+
 install-launcher:
     #!/usr/bin/env bash
     set -euo pipefail
-    
+
     LAUNCHER_PATH="$HOME/.local/share/applications/foxglove_rosbot_xl.desktop"
     CURRENT_DIR=$(pwd)
     ICON_PATH="${CURRENT_DIR}/husarion-signet.png"
-    
+
     echo "[Desktop Entry]
     Version=1.0
     Type=Application
@@ -98,11 +110,24 @@ install-launcher:
     Path=${CURRENT_DIR}
     Terminal=false
     StartupNotify=false" > "${LAUNCHER_PATH}"
-    
+
     sudo chmod +x "${LAUNCHER_PATH}"
     update-desktop-database "$HOME/.local/share/applications/"
-    echo "Application launcher for Foxglove ROSbot XL installed."
+    echo "Application launcher for Foxglove ROSbot XL UI installed."
 
+    # Add application launcher to the Ubuntu dock if not already present
+    FAVORITES=$(gsettings get org.gnome.shell favorite-apps)
+    LAUNCHER_ID="'foxglove_rosbot_xl.desktop'"
+
+    # Check if the launcher is already in the list of favorites
+    if [[ $FAVORITES != *"$LAUNCHER_ID"* ]]; then
+        # If not, add it to the list
+        NEW_FAVORITES=$(echo $FAVORITES | sed -e "s/]$/, $LAUNCHER_ID]/")
+        gsettings set org.gnome.shell favorite-apps "$NEW_FAVORITES"
+        echo "Application launcher for Foxglove ROSbot XL added to the dock."
+    else
+        echo "Application launcher for Foxglove ROSbot XL is already in the dock."
+    fi
 
 _run-as-user:
     #!/bin/bash
